@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#08111f"><meta name="description" content="Mobile crypto trading journal and market dashboard">
+<link rel="manifest" href="/manifest.webmanifest"><link rel="icon" href="/icon.svg">
+<title>Crypto Journal Pro</title>
+<link rel="stylesheet" href="/style.css">
+<script src="https://unpkg.com/lightweight-charts@5.0.8/dist/lightweight-charts.standalone.production.js"></script>
+</head>
+<body>
+<header class="app-header">
+ <div class="brand"><span class="brand-mark">◈</span><span>TRADE<span class="brand-accent">LOG</span><small>CRYPTO JOURNAL PRO</small></span></div>
+ <div class="header-actions"><span class="live-pill"><i></i> LIVE</span><button id="install-btn" class="icon-btn" hidden aria-label="Install app">＋</button><button id="theme-btn" class="icon-btn" aria-label="Theme">☼</button></div>
+</header>
+
+<main>
+<section id="page-market" class="page active">
+ <div class="page-title"><div><p class="eyebrow">MARKET OVERVIEW</p><h1>Market</h1></div><span class="market-status">BINANCE SPOT</span></div>
+ <div class="ticker-strip">
+  <button class="ticker active" data-pair="BTCUSDT"><span>BTC / USDT</span><b id="ticker-btc">—</b><small id="ticker-btc-pct">Loading</small></button>
+  <button class="ticker" data-pair="ETHUSDT"><span>ETH / USDT</span><b id="ticker-eth">—</b><small id="ticker-eth-pct">Loading</small></button>
+  <button class="ticker" data-pair="SOLUSDT"><span>SOL / USDT</span><b id="ticker-sol">—</b><small id="ticker-sol-pct">Loading</small></button>
+ </div>
+ <div class="panel chart-card">
+  <div class="chart-top"><div><span class="muted-label">SELECTED PAIR</span><h2 id="pair-title">BTCUSDT</h2><div class="price-line"><strong id="live-price">—</strong><span id="live-change">—</span></div></div><button id="chart-fullscreen" class="soft-btn">⛶</button></div>
+  <div class="chart-controls"><div class="segmented" id="timeframes"><button class="selected" data-tf="1m">1m</button><button data-tf="5m">5m</button><button data-tf="15m">15m</button><button data-tf="1h">1H</button><button data-tf="4h">4H</button><button data-tf="1d">1D</button></div><select id="chart-indicator"><option value="none">Indicators</option><option value="ema">EMA 20/50</option><option value="sma">SMA 20/50</option></select></div>
+  <div id="main-chart" class="main-chart"></div>
+  <div class="indicator-labels"><span class="legend-green">● EMA/SMA 20</span><span class="legend-blue">● EMA/SMA 50</span><span>Volume</span></div>
+  <div class="subchart-wrap"><div class="subchart-title">RSI (14) <b id="rsi-value">—</b></div><div id="rsi-chart" class="sub-chart"></div></div>
+  <div class="subchart-wrap"><div class="subchart-title">MACD (12, 26, 9)</div><div id="macd-chart" class="sub-chart"></div></div>
+  <p class="chart-note">Chart dan indikator dihitung dari candle Binance Spot. Harga antar-exchange dapat berbeda.</p>
+ </div>
+ <div class="section-heading"><div><p class="eyebrow">WATCHLIST</p><h2>Pasar pilihan</h2></div></div>
+ <div class="panel watchlist"><div class="watch-row"><span>₿ <b>Bitcoin</b><small>BTCUSDT</small></span><strong id="watch-btc">—</strong></div><div class="watch-row"><span>◆ <b>Ethereum</b><small>ETHUSDT</small></span><strong id="watch-eth">—</strong></div><div class="watch-row"><span>◎ <b>Solana</b><small>SOLUSDT</small></span><strong id="watch-sol">—</strong></div></div>
+ <div class="section-heading"><div><p class="eyebrow">RISK MONITOR</p><h2>Posisi terbuka</h2></div><button class="text-btn" data-go="journal">Lihat jurnal →</button></div>
+ <div id="open-positions" class="panel compact-panel empty-state">Belum ada posisi terbuka.</div>
+</section>
+
+<section id="page-journal" class="page">
+ <div class="page-title"><div><p class="eyebrow">YOUR TRADING RECORD</p><h1>Journal</h1></div><button id="add-trade-btn" class="primary-btn">＋ Trade</button></div>
+ <div class="journal-summary"><div><span>Jumlah trade</span><b id="journal-count">0</b></div><div><span>Posisi terbuka</span><b id="journal-open">0</b></div><div><span>Net P/L</span><b id="journal-pnl">$0.00</b></div></div>
+ <div class="filter-row"><select id="filter-pair"><option value="">Semua pair</option><option>BTCUSDT</option><option>ETHUSDT</option><option>SOLUSDT</option></select><select id="filter-status"><option value="">Semua status</option><option>OPEN</option><option>CLOSED</option></select></div>
+ <div id="trade-list" class="trade-list"><div class="empty-state panel">Belum ada jurnal. Tambahkan trade pertama Anda.</div></div>
+</section>
+
+<section id="page-analytics" class="page">
+ <div class="page-title"><div><p class="eyebrow">PERFORMANCE REPORT</p><h1>Analytics</h1></div><span class="market-status">ALL TIME</span></div>
+ <div class="metric-grid">
+  <div class="metric-card"><span>Net P/L</span><b id="a-pnl">$0.00</b><small>Setelah fee</small></div>
+  <div class="metric-card"><span>Win rate</span><b id="a-win">0%</b><small id="a-record">0W / 0L</small></div>
+  <div class="metric-card"><span>Profit factor</span><b id="a-pf">0.00</b><small>Gross profit / loss</small></div>
+  <div class="metric-card"><span>Max drawdown</span><b id="a-dd">$0.00</b><small>Peak to trough</small></div>
+  <div class="metric-card"><span>Average trade</span><b id="a-avg">$0.00</b><small>Net per closed trade</small></div>
+  <div class="metric-card"><span>Total trades</span><b id="a-total">0</b><small>Closed positions</small></div>
+ </div>
+ <div class="panel analytics-panel"><div class="section-heading"><div><p class="eyebrow">ACCOUNT PERFORMANCE</p><h2>Equity curve</h2></div></div><div id="equity-chart" class="equity-chart"></div></div>
+ <div class="panel analytics-panel"><div class="section-heading"><div><p class="eyebrow">CONSISTENCY</p><h2>Hasil berdasarkan pair</h2></div></div><div id="pair-performance" class="pair-performance"></div></div>
+ <div class="panel analytics-panel"><div class="section-heading"><div><p class="eyebrow">TRADING CALENDAR</p><h2>Kalender performa</h2></div><div class="calendar-nav"><button id="cal-prev">‹</button><b id="cal-month"></b><button id="cal-next">›</button></div></div><div id="calendar-grid" class="calendar-grid"></div><div class="calendar-legend"><span class="profit-dot"></span> Profit <span class="loss-dot"></span> Loss</div></div>
+</section>
+
+<section id="page-settings" class="page">
+ <div class="page-title"><div><p class="eyebrow">PREFERENCES & DATA</p><h1>Settings</h1></div></div>
+ <div class="panel settings-panel"><h2>Data & laporan</h2><p>Unduh salinan seluruh jurnal atau ekspor tabel transaksi.</p><button id="backup-btn" class="settings-action">⇩ Download backup JSON</button><button id="csv-btn" class="settings-action">⇩ Export CSV</button><button id="pdf-btn" class="settings-action">▤ Print / Save PDF</button><label class="settings-action file-action">⇧ Import backup JSON<input id="import-file" type="file" accept="application/json"></label></div>
+ <div class="panel settings-panel"><h2>Instalasi aplikasi</h2><p>Gunakan menu browser Android → “Add to Home screen” atau tombol instal jika tersedia.</p><p class="muted">PWA membutuhkan HTTPS saat dipasang dari hosting. localhost dapat digunakan untuk pengembangan.</p></div>
+ <div class="panel settings-panel"><h2>Informasi aplikasi</h2><p>Versi 2.0 · Binance Spot market data · SQLite local database.</p><p class="muted">Jurnal ini adalah alat pencatatan dan analisis, bukan saran investasi atau eksekusi order.</p></div>
+</section>
+</main>
+
+<nav class="bottom-nav">
+ <button class="nav-item active" data-page="market"><span>⌁</span><small>Market</small></button>
+ <button class="nav-item" data-page="journal"><span>▤</span><small>Journal</small></button>
+ <button class="nav-item" data-page="analytics"><span>◫</span><small>Analytics</small></button>
+ <button class="nav-item" data-page="settings"><span>⚙</span><small>Settings</small></button>
+</nav>
+
+<div id="trade-modal" class="modal" aria-hidden="true">
+ <div class="modal-sheet"><div class="modal-handle"></div><div class="modal-head"><div><p class="eyebrow">TRADE MANAGEMENT</p><h2 id="modal-title">Tambah trade</h2></div><button id="close-modal" class="icon-btn">✕</button></div>
+ <form id="trade-form">
+  <input type="hidden" name="id" id="trade-id">
+  <div class="form-grid">
+   <label>Pair<select name="symbol" id="form-symbol"><option>BTCUSDT</option><option>ETHUSDT</option><option>SOLUSDT</option></select></label>
+   <label>Market<select name="market"><option>SPOT</option><option>FUTURES</option></select></label>
+   <label>Direction<select name="direction"><option>LONG</option><option>SHORT</option></select></label>
+   <label>Status<select name="status" id="form-status"><option>OPEN</option><option>CLOSED</option></select></label>
+   <label>Entry price<input name="entry_price" type="number" step="any" required inputmode="decimal"></label>
+   <label>Exit price<input name="exit_price" id="form-exit" type="number" step="any" inputmode="decimal"></label>
+   <label>Quantity<input name="quantity" type="number" step="any" min="0" required inputmode="decimal"></label>
+   <label>Fees (USDT)<input name="fees" type="number" step="any" value="0" inputmode="decimal"></label>
+   <label>Stop loss<input name="stop_loss" type="number" step="any" inputmode="decimal"></label>
+   <label>Take profit<input name="take_profit" type="number" step="any" inputmode="decimal"></label>
+   <label>Strategy<input name="strategy" placeholder="Breakout, pullback..."></label>
+   <label>Setup<input name="setup" placeholder="EMA cross, support..."></label>
+   <label>Emosi<select name="emotion"><option value="">Pilih emosi</option><option>Tenang</option><option>Percaya diri</option><option>Takut</option><option>FOMO</option><option>Balas dendam</option><option>Ragu-ragu</option></select></label>
+   <label>Rating disiplin<select name="rating"><option value="0">Belum dinilai</option><option value="1">1 - Buruk</option><option value="2">2</option><option value="3">3 - Cukup</option><option value="4">4</option><option value="5">5 - Sangat baik</option></select></label>
+   <label class="full">Waktu entry<input name="opened_at" type="datetime-local" required></label>
+   <label class="full">Catatan<textarea name="notes" rows="3" placeholder="Alasan entry, konfirmasi, evaluasi..."></textarea></label>
+   <label class="full upload-label">Screenshot chart (JPG/PNG/WebP, maks. 5MB)<input name="screenshot" type="file" accept="image/jpeg,image/png,image/webp"></label>
+  </div>
+  <div id="form-error" class="form-error"></div><button class="primary-btn submit-btn" type="submit">Simpan transaksi</button>
+ </form></div>
+</div>
+<div id="toast" class="toast"></div>
+<script src="/app.js"></script>
+</body></html>
