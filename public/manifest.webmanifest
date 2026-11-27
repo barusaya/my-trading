@@ -1,0 +1,10 @@
+{
+ "name":"TradeLog Crypto Journal Pro",
+ "short_name":"TradeLog",
+ "start_url":"/",
+ "display":"standalone",
+ "background_color":"#08111f",
+ "theme_color":"#08111f",
+ "description":"Mobile-first crypto trading journal",
+ "icons":[{"src":"/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+}
